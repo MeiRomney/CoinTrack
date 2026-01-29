@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <StandardLayout navbar={<Navbar />} sidebar={null}>
+    <StandardLayout navbar={<Navbar />}>
       {children || <Outlet />}
     </StandardLayout>
   );

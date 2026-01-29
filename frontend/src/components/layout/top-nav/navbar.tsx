@@ -26,7 +26,7 @@ import {
   NavbarNotificationButton,
   NavbarSearch,
   NavbarSection,
-} from "../../../ui-kits/navbar";
+} from "../../ui";
 import { primaryGroupNav } from "./navbar-config";
 
 interface NavbarProps {
@@ -90,10 +90,7 @@ export function Navbar({ className = "" }: NavbarProps) {
       <NavbarContent>
         <NavbarInner>
           <NavbarSection className="flex px-2 lg:px-0">
-            <NavbarLogo
-              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-              alt="CoinTrack"
-            />
+            <NavbarLogo src="/img/cointrack-logo.png" alt="CoinTrack" />
             <NavbarLinks>
               {primaryGroupNav.map((item) => (
                 <NavbarItem

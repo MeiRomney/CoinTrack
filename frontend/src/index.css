@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+/* Overrid dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* CleverApply Brand Colors - will be updated based on brand guide */
+  --color-primary-50: oklch(0.97 0.01 248);
+  --color-primary-100: oklch(0.93 0.05 248);
+  --color-primary-200: oklch(0.87 0.09 248);
+  --color-primary-300: oklch(0.78 0.16 248);
+  --color-primary-400: oklch(0.69 0.19 248);
+  --color-primary-500: oklch(0.61 0.21 248);
+  --color-primary-600: oklch(0.52 0.24 248);
+  --color-primary-700: oklch(0.44 0.26 248);
+  --color-primary-800: oklch(0.37 0.25 248);
+  --color-primary-900: oklch(0.31 0.22 248);
+  --color-primary-950: oklch(0.19 0.15 248);
+  --color-primary: var(--color-primary-500);
+
+  --color-secondary-50: oklch(0.98 0 247);
+  --color-secondary-100: oklch(0.96 0.01 247);
+  --color-secondary-200: oklch(0.92 0.02 247);
+  --color-secondary-300: oklch(0.86 0.03 247);
+  --color-secondary-400: oklch(0.71 0.04 247);
+  --color-secondary-500: oklch(0.57 0.05 247);
+  --color-secondary-600: oklch(0.46 0.05 247);
+  --color-secondary-700: oklch(0.37 0.05 247);
+  --color-secondary-800: oklch(0.26 0.04 247);
+  --color-secondary-900: oklch(0.15 0.03 247);
+  --color-secondary-950: oklch(0.06 0.02 247);
+  --color-secondary: var(--color-secondary-500);
+
+  /* Keep existing zinc colors for compatibility with ui-kit */
+  --color-zinc-50: oklch(0.98 0 0);
+  --color-zinc-100: oklch(0.96 0 0);
+  --color-zinc-200: oklch(0.92 0 0);
+  --color-zinc-300: oklch(0.86 0 0);
+  --color-zinc-400: oklch(0.71 0 0);
+  --color-zinc-500: oklch(0.57 0 0);
+  --color-zinc-600: oklch(0.46 0 0);
+  --color-zinc-700: oklch(0.37 0 0);
+  --color-zinc-800: oklch(0.26 0 0);
+  --color-zinc-900: oklch(0.15 0 0);
+  --color-zinc-950: oklch(0.09 0 0);
+
+  /* Semantic colors - Light theme defaults */
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.15 0 0);
+  --color-muted: oklch(0.96 0 0);
+  --color-muted-foreground: oklch(0.57 0 0);
+  --color-border: oklch(0.92 0 0);
+  --color-input: oklch(0.98 0 0);
+  --color-ring: oklch(0.61 0.21 248);
+  --color-accent: oklch(0.61 0.21 248);
+  --color-accent-foreground: oklch(1 0 0);
+
+  /* Card colors */
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.15 0 0);
+
+  /* Popover colors */
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.15 0 0);
+
+  /* Font families */
+  --font-family-sans: "Inter", system-ui, sans-serif;
+
+  /* Animations */
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+  --animate-slide-in: slideIn 0.3s ease-out;
+
+  /* Keyframes */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+.light {
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.15 0 0);
+  --color-muted: oklch(0.96 0 0);
+  --color-muted-foreground: oklch(0.57 0 0);
+  --color-border: oklch(0.92 0 0);
+  --color-input: oklch(0.98 0 0);
+  --color-ring: oklch(0.61 0.21 248);
+  --color-accent: oklch(0.61 0.21 248);
+  --color-accent-foreground: oklch(1 0 0);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.15 0 0);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.15 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: oklch(0.09 0 0);
+    --color-foreground: oklch(0.98 0 0);
+    --color-muted: oklch(0.26 0 0);
+    --color-muted-foreground: oklch(0.71 0 0);
+    --color-border: oklch(0.37 0 0);
+    --color-input: oklch(0.37 0 0);
+    --color-ring: oklch(0.69 0.19 248);
+    --color-accent: oklch(0.69 0.19 248);
+    --color-accent-foreground: oklch(1 0 0);
+    --color-card: oklch(0.26 0 0);
+    --color-card-foreground: oklch(0.98 0 0);
+    --color-popover: oklch(0.26 0 0);
+    --color-popover-foreground: oklch(0.98 0 0);
+  }
+}
+
+.dark {
+  --color-background: oklch(0.09 0 0);
+  --color-foreground: oklch(0.98 0 0);
+  --color-muted: oklch(0.26 0 0);
+  --color-muted-foreground: oklch(0.71 0 0);
+  --color-border: oklch(0.37 0 0);
+  --color-input: oklch(0.37 0 0);
+  --color-ring: oklch(0.69 0.19 248);
+  --color-accent: oklch(0.69 0.19 248);
+  --color-accent-foreground: oklch(1 0 0);
+  --color-card: oklch(0.26 0 0);
+  --color-card-foreground: oklch(0.98 0 0);
+  --color-popover: oklch(0.26 0 0);
+  --color-popover-foreground: oklch(0.98 0 0);
+}
+
+@layer base {
+  html {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  body {
+    @apply antialiased;
+  }
+
+  /* PWA iOS Safari compatibility */
+  @media (display-mode: standalone) {
+    body {
+      user-select: none;
+      touch-action: manipulation;
+    }
+  }
+}
+
+@layer components {
+  /* Brand-specific component styles */
+  .brand-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600;
+  }
+
+  .brand-text {
+    @apply text-primary-600 dark:text-primary-400;
+  }
+
+  .brand-bg {
+    @apply bg-primary-50 dark:bg-primary-950;
+  }
+
+  /* Offline indicator */
+  .offline-indicator {
+    @apply fixed top-0 left-0 right-0 z-50 bg-amber-500 text-white text-center py-2 text-sm font-medium;
+    @apply transform -translate-y-full transition-transform duration-300;
+  }
+
+  .offline-indicator.show {
+    @apply translate-y-0;
+  }
+}
+
+@layer utilities {
+  /* Custom utilities for PWA */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-area-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
