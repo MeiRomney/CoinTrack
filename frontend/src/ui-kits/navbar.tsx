@@ -16,7 +16,7 @@ export function Navbar({
       {...props}
       className={clsx(
         className,
-        "relative bg-gray-800/50",
+        "relative bg-white dark:bg-neutral-900/50 shadow-md",
         "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10",
       )}
     />
@@ -109,8 +109,8 @@ export const NavbarItem = forwardRef(function NavbarItem(
     "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
     // Active state
     active
-      ? "border-indigo-500 text-white"
-      : "border-transparent text-gray-400 hover:border-white/20 hover:text-white",
+      ? "border-orange-500 text-neutral-800 dark:text-white"
+      : "border-transparent text-neutral-600 dark:text-neutral-300 hover:border-orange-500 hover:text-neutral-800 dark:hover:text-white",
   );
 
   return typeof props.href === "string" ? (
@@ -145,13 +145,13 @@ export function NavbarSearch({
           type="search"
           placeholder={placeholder}
           {...props}
-          className="col-start-1 row-start-1 block w-full rounded-md bg-white/5 py-1.5 pr-3 pl-10 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+          className="col-start-1 row-start-1 block w-full rounded-md bg-neutral-400/20 dark:bg-black py-1.5 pr-3 pl-10 text-base  text-neutral-800 dark:text-white outline-1 -outline-offset-1 outline-neutral-800/10 dark:outline-neutral-700/80 placeholder:text-neutral-500 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-500 sm:text-sm/6"
         />
         <svg
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden="true"
-          className="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-gray-400"
+          className="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-neutral-400"
         >
           <path
             d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z"
@@ -176,7 +176,7 @@ export function NavbarMobileMenuButton({
       <button
         type="button"
         onClick={onClick}
-        className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500"
+        className="relative inline-flex items-center justify-center rounded-md p-2 text-neutral-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500"
       >
         <span className="absolute -inset-0.5"></span>
         <span className="sr-only">Open main menu</span>
@@ -215,7 +215,7 @@ export function NavbarNotificationButton({
       onClick={onClick}
       className={clsx(
         className,
-        "relative shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500",
+        "relative shrink-0 rounded-full p-1 text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-orange-500",
       )}
     >
       <span className="absolute -inset-1.5"></span>
@@ -240,7 +240,7 @@ export function NavbarAvatar({
       alt={alt}
       className={clsx(
         className,
-        "size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10",
+        "size-8 rounded-full bg-neutral-800 outline -outline-offset-1 outline-white/10",
       )}
     />
   );
@@ -287,8 +287,8 @@ export const NavbarMobileItem = forwardRef(function NavbarMobileItem(
     "block border-l-4 py-2 pr-4 pl-3 text-base font-medium",
     // Active state
     active
-      ? "border-indigo-500 bg-indigo-600/10 text-indigo-400"
-      : "border-transparent text-gray-300 hover:border-white/20 hover:bg-white/5 hover:text-white",
+      ? "border-orange-500 bg-orange-600/10 text-orange-400"
+      : "border-transparent text-neutral-600 dark:text-neutral-300 hover:border-black/20 dark:hover:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white",
   );
 
   return typeof props.href === "string" ? (
@@ -313,7 +313,10 @@ export function NavbarMobileProfile({
   return (
     <div
       {...props}
-      className={clsx(className, "border-t border-white/10 pt-4 pb-3")}
+      className={clsx(
+        className,
+        "border-t border-black/10 dark:border-white/10 pt-4 pb-3",
+      )}
     />
   );
 }
@@ -335,17 +338,21 @@ export function NavbarMobileProfileInfo({
         <img
           src={avatarSrc}
           alt=""
-          className="size-10 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
+          className="size-10 rounded-full bg-neutral-800 outline -outline-offset-1 outline-white/10"
         />
       </div>
       <div className="ml-3">
-        <div className="text-base font-medium text-gray-200">{name}</div>
-        <div className="text-sm font-medium text-gray-400">{email}</div>
+        <div className="text-base font-medium text-neutral-800 dark:text-neutral-200">
+          {name}
+        </div>
+        <div className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+          {email}
+        </div>
       </div>
       <button
         type="button"
         onClick={onNotificationClick}
-        className="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2"
+        className="relative ml-auto shrink-0 rounded-full p-1 text-neutral-600 dark:text-neutral-300 hover:text-white focus:outline-2 focus:outline-offset-2"
       >
         <span className="absolute -inset-1.5"></span>
         <span className="sr-only">View notifications</span>
@@ -381,7 +388,7 @@ export const NavbarMobileProfileLink = forwardRef(
     ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
   ) {
     const classes =
-      "block px-4 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white";
+      "block px-4 py-2 text-base font-medium text-neutral-400 hover:bg-white/5 hover:text-white";
 
     return typeof props.href === "string" ? (
       <Link

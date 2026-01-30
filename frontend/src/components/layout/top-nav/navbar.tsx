@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useTheme } from "../../../contexts/theme-context";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  ComputerDesktopIcon,
-  MoonIcon,
-  SunIcon,
-} from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import {
   Navbar as NavbarUI,
   NavbarActions,
@@ -26,6 +22,10 @@ import {
   NavbarNotificationButton,
   NavbarSearch,
   NavbarSection,
+  Dropdown,
+  DropdownButton,
+  DropdownMenu,
+  DropdownItem,
 } from "../../ui";
 import { primaryGroupNav } from "./navbar-config";
 
@@ -39,42 +39,6 @@ export function Navbar({ className = "" }: NavbarProps) {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const getThemeIcon = () => {
-    switch (theme) {
-      case "light":
-        return SunIcon;
-      case "dark":
-        return MoonIcon;
-      case "system":
-      default:
-        return ComputerDesktopIcon;
-    }
-  };
-
-  const cycleTheme = () => {
-    const themes: Array<"light" | "dark" | "system"> = [
-      "light",
-      "dark",
-      "system",
-    ];
-    const currentIndex = themes.indexOf(theme);
-    const nextIndex = (currentIndex + 1) % themes.length;
-    setTheme(themes[nextIndex]);
-  };
-
-  const getThemeLabel = () => {
-    switch (theme) {
-      case "light":
-        return "Light Theme";
-      case "dark":
-        return "Dark Theme";
-      case "system":
-        return `System (${actualTheme})`;
-      default:
-        return "Theme";
-    }
-  };
-
   // Helper function to determine if a route is current
   const isCurrentRoute = (route: string) => {
     if (route === "/dashboard" && location.pathname === "/") return true;
@@ -82,8 +46,6 @@ export function Navbar({ className = "" }: NavbarProps) {
       return true;
     return location.pathname.startsWith(route) && route !== "/dashboard";
   };
-
-  const ThemeIcon = getThemeIcon();
 
   return (
     <NavbarUI className={className}>
@@ -117,16 +79,35 @@ export function Navbar({ className = "" }: NavbarProps) {
 
           <NavbarActions>
             {/* Theme Toggle Button */}
-            <button
-              type="button"
-              onClick={cycleTheme}
-              className="relative shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500"
-              title={getThemeLabel()}
+            <NavbarItem
+              onClick={() =>
+                setTheme(actualTheme === "dark" ? "light" : "dark")
+              }
+              title={
+                actualTheme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              className="cursor-pointer"
             >
-              <span className="absolute -inset-1.5"></span>
-              <span className="sr-only">Toggle theme</span>
-              <ThemeIcon className="size-6" />
-            </button>
+              {actualTheme === "dark" ? (
+                <SunIcon className="!size-6 !stroke-current !fill-transparent" />
+              ) : (
+                <MoonIcon className="!size-6 !stroke-current !fill-transparent" />
+              )}
+            </NavbarItem>
+            <NavbarItem>
+              <Dropdown>
+                <DropdownButton className="!bg-transparent !border-none">
+                  <Cog6ToothIcon className="!size-6" />
+                </DropdownButton>
+                <DropdownMenu className="min-w-64" anchor="bottom end">
+                  <DropdownItem>Theme</DropdownItem>
+                  <DropdownItem>Language</DropdownItem>
+                  <DropdownItem>Currency</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </NavbarItem>
 
             <NavbarNotificationButton
               onClick={() => console.log("Notifications")}

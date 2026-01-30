@@ -9,7 +9,7 @@ export function StandardLayout({
   navbar: React.ReactNode;
 }>) {
   return (
-    <div className="relative isolate flex min-h-screen w-full flex-col bg-white dark:bg-gray-900">
+    <div className="relative isolate flex min-h-screen w-full flex-col bg-white dark:bg-black">
       {/* Navbar - it handles its own mobile menu */}
       {navbar}
 
