@@ -11,3 +11,5 @@ export * from "../../ui-kits/input";
 export * from "../../ui-kits/switch";
 export * from "../../ui-kits/text";
 export * from "../../ui-kits/textarea";
+export * from "../../ui-kits/fieldset";
+export * from "../../ui-kits/select";

@@ -62,11 +62,13 @@ type Color = keyof typeof colors;
 export function Switch({
   color = "primary",
   className,
+  children,
   ...props
 }: {
   color?: Color;
   className?: string;
-} & Omit<Headless.SwitchProps, "as" | "className" | "children">) {
+  children?: React.ReactNode;
+} & Omit<Headless.SwitchProps, "as" | "className">) {
   return (
     <Headless.Switch
       data-slot="control"
@@ -74,7 +76,7 @@ export function Switch({
       className={clsx(
         className,
         // Base styles
-        "group relative isolate inline-flex h-6 w-10 cursor-default rounded-full p-[3px] sm:h-5 sm:w-8",
+        "group relative isolate inline-flex h-6 w-10 cursor-pointer rounded-full p-[3px] sm:h-5 sm:w-10",
         // Transitions
         "transition-all duration-200 ease-in-out",
         // Unchecked state
@@ -82,9 +84,9 @@ export function Switch({
         // Checked state - this is the key fix
         colors[color],
         // Focus
-        "focus:outline-hidden data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500",
+        "focus:outline-hidden data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-orange-500",
         // Hover
-        "data-hover:ring-ring",
+        "data-hover:ring-ring data-hover:shadow-md",
         // Disabled
         "data-disabled:opacity-50 data-disabled:cursor-not-allowed",
       )}
@@ -93,15 +95,17 @@ export function Switch({
         aria-hidden="true"
         className={clsx(
           // Basic layout
-          "pointer-events-none relative inline-block size-4.5 rounded-full sm:size-3.5",
+          "pointer-events-none relative inline-flex items-center justify-center size-4.5 rounded-full sm:size-3.5",
           // Transition for smooth sliding
           "translate-x-0 transition-transform duration-200 ease-in-out",
           // Always white/light background for the toggle button
-          "bg-white shadow-sm ring-1 ring-black/10",
+          "bg-white shadow-md ring-1 ring-black/5",
           // Checked state - slide to the right
-          "group-data-checked:translate-x-4 sm:group-data-checked:translate-x-3",
+          "group-data-checked:translate-x-[1.375rem] sm:group-data-checked:translate-x-[1.125rem]",
         )}
-      />
+      >
+        {children}
+      </span>
     </Headless.Switch>
   );
 }
