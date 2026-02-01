@@ -63,7 +63,7 @@ export function Navbar({ className = "" }: NavbarProps) {
       <NavbarContent>
         <NavbarInner>
           <NavbarSection className="flex px-2 lg:px-0">
-            <NavbarLogo src="/img/cointrack-logo.png" alt="CoinTrack" />
+            <NavbarLogo src="/img/cointrack-logo.svg" alt="CoinTrack" />
             <NavbarLinks>
               {primaryGroupNav.map((item) => (
                 <NavbarItem
