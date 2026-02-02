@@ -49,6 +49,8 @@ export function Navbar({ className = "" }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState("english");
   const [currency, setCurrency] = useState("usd");
+  const [showLanguageSubmenu, setShowLanguageSubmenu] = useState(false);
+  const [showCurrencySubmenu, setShowCurrencySubmenu] = useState(false);
 
   // Helper function to determine if a route is current
   const isCurrentRoute = (route: string) => {
@@ -94,13 +96,13 @@ export function Navbar({ className = "" }: NavbarProps) {
           />
 
           <NavbarActions>
-            <NavbarItem>
-              <Dropdown>
-                <DropdownButton plain className="!bg-transparent !border-none">
-                  <Cog6ToothIcon className="!size-6" />
-                </DropdownButton>
-                <DropdownMenu className="min-w-64" anchor="bottom end">
-                  <DropdownItem>
+            <Dropdown>
+              <DropdownButton plain className="!bg-transparent !border-none">
+                <Cog6ToothIcon className="!size-6" />
+              </DropdownButton>
+              <DropdownMenu className="min-w-64" anchor="bottom end">
+                <DropdownItem>
+                  <div>
                     <SwitchField>
                       <Label className="flex items-center gap-2 font-medium">
                         Theme
@@ -124,60 +126,116 @@ export function Navbar({ className = "" }: NavbarProps) {
                         )}
                       </Switch>
                     </SwitchField>
-                  </DropdownItem>
+                  </div>
+                </DropdownItem>
 
-                  <DropdownDivider />
+                <DropdownDivider />
 
-                  <DropdownItem asChild>
-                    <Dropdown>
-                      <DropdownButton
-                        plain
-                        className="!bg-transparent !border-none !p-0 flex items-center justify-between w-full text-sm"
-                      >
+                {!showLanguageSubmenu && !showCurrencySubmenu && (
+                  <>
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowLanguageSubmenu(true);
+                        setShowCurrencySubmenu(false);
+                      }}
+                    >
+                      <div className="flex items-center justify-between w-full">
                         <Label className="font-medium">Language</Label>
-                        <span className="flex items-center gap-1 capitalize">
+                        <span className="ml-16 flex items-center gap-1 capitalize text-sm text-zinc-500">
                           {language}
                           <ChevronRightIcon className="w-4 h-4" />
                         </span>
-                      </DropdownButton>
-                      <DropdownMenu anchor="right start">
-                        <DropdownItem onClick={() => setLanguage("english")}>
-                          English
-                        </DropdownItem>
-                        <DropdownItem onClick={() => setLanguage("khmer")}>
-                          Khmer
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  </DropdownItem>
+                      </div>
+                    </DropdownItem>
 
-                  <DropdownDivider />
+                    <DropdownDivider />
 
-                  <DropdownItem asChild>
-                    <Dropdown>
-                      <DropdownButton
-                        plain
-                        className="!bg-transparent !border-none !p-0 flex items-center justify-between w-full text-sm"
-                      >
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowCurrencySubmenu(true);
+                        setShowLanguageSubmenu(false);
+                      }}
+                    >
+                      <div className="flex items-center justify-between w-full">
                         <Label className="font-medium">Currency</Label>
-                        <span className="flex items-center gap-1 uppercase">
+                        <span className="ml-16 flex items-center gap-1 uppercase text-sm text-zinc-500">
                           {currency}
                           <ChevronRightIcon className="w-4 h-4" />
                         </span>
-                      </DropdownButton>
-                      <DropdownMenu anchor="right start">
-                        <DropdownItem onClick={() => setCurrency("usd")}>
-                          USD
-                        </DropdownItem>
-                        <DropdownItem onClick={() => setCurrency("khr")}>
-                          KHR
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </NavbarItem>
+                      </div>
+                    </DropdownItem>
+                  </>
+                )}
+
+                {showLanguageSubmenu && (
+                  <>
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowLanguageSubmenu(false);
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ChevronRightIcon className="w-4 h-4 rotate-180" />
+                        <span className="font-medium">Back</span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownDivider />
+                    <DropdownItem
+                      onClick={() => {
+                        setLanguage("english");
+                        setShowLanguageSubmenu(false);
+                      }}
+                    >
+                      English
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={() => {
+                        setLanguage("khmer");
+                        setShowLanguageSubmenu(false);
+                      }}
+                    >
+                      Khmer
+                    </DropdownItem>
+                  </>
+                )}
+
+                {showCurrencySubmenu && (
+                  <>
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowCurrencySubmenu(false);
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ChevronRightIcon className="w-4 h-4 rotate-180" />
+                        <span className="font-medium">Back</span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownDivider />
+                    <DropdownItem
+                      onClick={() => {
+                        setCurrency("usd");
+                        setShowCurrencySubmenu(false);
+                      }}
+                    >
+                      USD
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={() => {
+                        setCurrency("khr");
+                        setShowCurrencySubmenu(false);
+                      }}
+                    >
+                      KHR
+                    </DropdownItem>
+                  </>
+                )}
+              </DropdownMenu>
+            </Dropdown>
 
             <NavbarNotificationButton
               onClick={() => console.log("Notifications")}
@@ -252,81 +310,139 @@ export function Navbar({ className = "" }: NavbarProps) {
                 <Cog6ToothIcon className="!size-6" />
               </DropdownButton>
               <DropdownMenu className="min-w-64" anchor="bottom end">
-                <DropdownItem>
-                  <SwitchField>
-                    <Label className="flex items-center gap-2 font-medium">
-                      Theme
-                    </Label>
-                    <Switch
-                      color="orange"
-                      checked={actualTheme === "dark"}
-                      onChange={() =>
-                        setTheme(actualTheme === "dark" ? "light" : "dark")
-                      }
-                      title={
-                        actualTheme === "dark"
-                          ? "Switch to light mode"
-                          : "Switch to dark mode"
-                      }
-                    >
-                      {actualTheme === "dark" ? (
-                        <MoonIcon className="size-2.5 fill-blue-400" />
-                      ) : (
-                        <SunIcon className="size-2.5 fill-yellow-500" />
-                      )}
-                    </Switch>
-                  </SwitchField>
+                <DropdownItem asChild>
+                  <div>
+                    <SwitchField>
+                      <Label className="flex items-center gap-2 font-medium">
+                        Theme
+                      </Label>
+                      <Switch
+                        color="orange"
+                        checked={actualTheme === "dark"}
+                        onChange={() =>
+                          setTheme(actualTheme === "dark" ? "light" : "dark")
+                        }
+                        title={
+                          actualTheme === "dark"
+                            ? "Switch to light mode"
+                            : "Switch to dark mode"
+                        }
+                      >
+                        {actualTheme === "dark" ? (
+                          <MoonIcon className="size-2.5 fill-blue-400" />
+                        ) : (
+                          <SunIcon className="size-2.5 fill-yellow-500" />
+                        )}
+                      </Switch>
+                    </SwitchField>
+                  </div>
                 </DropdownItem>
 
                 <DropdownDivider />
 
-                <DropdownItem asChild>
-                  <Dropdown>
-                    <DropdownButton
-                      plain
-                      className="!bg-transparent !border-none !p-0 flex items-center justify-between w-full text-sm"
+                {!showLanguageSubmenu && !showCurrencySubmenu && (
+                  <>
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowLanguageSubmenu(true);
+                        setShowCurrencySubmenu(false);
+                      }}
                     >
-                      <Label className="font-medium">Language</Label>
-                      <span className="flex items-center gap-1 capitalize">
-                        {language}
-                        <ChevronRightIcon className="w-4 h-4" />
-                      </span>
-                    </DropdownButton>
-                    <DropdownMenu anchor="right start">
-                      <DropdownItem onClick={() => setLanguage("english")}>
-                        English
-                      </DropdownItem>
-                      <DropdownItem onClick={() => setLanguage("khmer")}>
-                        Khmer
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </DropdownItem>
+                      <div className="flex items-center justify-between w-full">
+                        <Label className="font-medium">Language</Label>
+                        <span className="ml-12 flex items-center gap-1 capitalize text-sm text-zinc-500">
+                          {language}
+                          <ChevronRightIcon className="w-4 h-4" />
+                        </span>
+                      </div>
+                    </DropdownItem>
 
-                <DropdownDivider />
+                    <DropdownDivider />
 
-                <DropdownItem asChild>
-                  <Dropdown>
-                    <DropdownButton
-                      plain
-                      className="!bg-transparent !border-none !p-0 flex items-center justify-between w-full text-sm"
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowCurrencySubmenu(true);
+                        setShowLanguageSubmenu(false);
+                      }}
                     >
-                      <Label className="font-medium">Currency</Label>
-                      <span className="flex items-center gap-1 uppercase">
-                        {currency}
-                        <ChevronRightIcon className="w-4 h-4" />
-                      </span>
-                    </DropdownButton>
-                    <DropdownMenu anchor="right start">
-                      <DropdownItem onClick={() => setCurrency("usd")}>
-                        USD
-                      </DropdownItem>
-                      <DropdownItem onClick={() => setCurrency("khr")}>
-                        KHR
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </DropdownItem>
+                      <div className="flex items-center justify-between w-full">
+                        <Label className="font-medium">Currency</Label>
+                        <span className="flex items-center gap-1 uppercase text-sm text-zinc-500">
+                          {currency}
+                          <ChevronRightIcon className="w-4 h-4" />
+                        </span>
+                      </div>
+                    </DropdownItem>
+                  </>
+                )}
+
+                {showLanguageSubmenu && (
+                  <>
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowLanguageSubmenu(false);
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ChevronRightIcon className="w-4 h-4 rotate-180" />
+                        <span className="font-medium">Back</span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownDivider />
+                    <DropdownItem
+                      onClick={() => {
+                        setLanguage("english");
+                        setShowLanguageSubmenu(false);
+                      }}
+                    >
+                      English
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={() => {
+                        setLanguage("khmer");
+                        setShowLanguageSubmenu(false);
+                      }}
+                    >
+                      Khmer
+                    </DropdownItem>
+                  </>
+                )}
+
+                {showCurrencySubmenu && (
+                  <>
+                    <DropdownItem
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowCurrencySubmenu(false);
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ChevronRightIcon className="w-4 h-4 rotate-180" />
+                        <span className="font-medium">Back</span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownDivider />
+                    <DropdownItem
+                      onClick={() => {
+                        setCurrency("usd");
+                        setShowCurrencySubmenu(false);
+                      }}
+                    >
+                      USD
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={() => {
+                        setCurrency("khr");
+                        setShowCurrencySubmenu(false);
+                      }}
+                    >
+                      KHR
+                    </DropdownItem>
+                  </>
+                )}
               </DropdownMenu>
             </Dropdown>
           </NavbarMobileItem>
