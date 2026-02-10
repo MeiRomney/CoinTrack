@@ -8,6 +8,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { Heading } from "../ui-kits/heading";
+import { Text } from "../ui-kits/text";
 
 const HomePage: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -77,7 +79,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen min-h-screen overflow-x-hidden">
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+      <div className="min-h-screen bg-gradient-to-r from-neutral-100 via-neutral-200 to-neutral-100 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 text-neutral-800 dark:text-white">
         {/* Background Effects */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse-slow" />
@@ -95,30 +97,27 @@ const HomePage: React.FC = () => {
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="space-y-8 animate-slide-up">
-                <div className="inline-block px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                  <span className="text-sm font-medium text-emerald-400">
-                    Trusted by 100,000+ crypto investors
+                <Heading
+                  level={1}
+                  className="text-6xl lg:text-7xl font-bold leading-tight tracking-tight"
+                >
+                  Track All Your Crypto
+                  <span className="block mt-2 bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
+                    In One Place
                   </span>
-                </div>
+                </Heading>
 
-                <h1 className="text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-                  Track all your crypto
-                  <span className="block mt-2 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                    in one place
-                  </span>
-                </h1>
-
-                <p className="text-xl text-slate-400 leading-relaxed max-w-xl">
+                <Text className="!text-xl leading-relaxed max-w-xl">
                   Connect your wallets and watch your portfolio grow in
                   real-time. Everything you need to master your crypto journey.
-                </p>
+                </Text>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <button className="group px-8 py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl text-lg font-semibold hover:shadow-2xl hover:shadow-emerald-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2">
+                  <button className="group px-8 py-4 bg-gradient-to-r from-orange-600 to-blue-600 rounded-xl text-lg font-semibold hover:shadow-2xl hover:shadow-orange-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2 text-white cursor-pointer">
                     Connect Wallet
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
-                  <button className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl text-lg font-semibold hover:bg-white/10 transition-all backdrop-blur-sm">
+                  <button className="px-8 py-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-lg font-semibold hover:bg-black/10 dark:hover:bg-white/10 transition-all backdrop-blur-sm cursor-pointer">
                     Get Started
                   </button>
                 </div>

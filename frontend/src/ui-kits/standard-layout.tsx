@@ -15,9 +15,7 @@ export function StandardLayout({
 
       {/* Content */}
       <main className="flex flex-1 flex-col overflow-x-hidden">
-        <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          {children}
-        </div>
+        <div className="mx-auto w-full max-w-7xl">{children}</div>
       </main>
     </div>
   );

@@ -61,7 +61,7 @@ export function Navbar({ className = "" }: NavbarProps) {
   };
 
   return (
-    <NavbarUI className={className}>
+    <NavbarUI className={`!fixed top-0 left-0 right-0 z-50 ${className}`}>
       <NavbarContent>
         <NavbarInner>
           <NavbarSection className="flex px-2 lg:px-0">

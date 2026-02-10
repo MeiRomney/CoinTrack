@@ -15,8 +15,8 @@ export function Navbar({
     <nav
       {...props}
       className={clsx(
-        className,
         "relative bg-white dark:bg-neutral-900/50 shadow-md",
+        className,
         "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10",
       )}
     />
