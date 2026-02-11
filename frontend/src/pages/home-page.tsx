@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Heading } from "../ui-kits/heading";
 import { Text } from "../ui-kits/text";
+import { Badge } from "../ui-kits/badge";
 
 const HomePage: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -140,20 +141,16 @@ const HomePage: React.FC = () => {
 
               {/* Dashboard Preview */}
               <div className="relative animate-slide-up-delayed">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-3xl blur-3xl opacity-20" />
-                <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-blue-500 rounded-3xl blur-3xl opacity-20" />
+                <div className="relative bg-gradient-to-br from-zinc-200/50 to-zinc-300/50 dark:from-zinc-800/50 dark:to-zinc-900/50 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-3xl p-8 shadow-2xl">
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-slate-400">
-                        Total Portfolio Value
-                      </span>
-                      <span className="text-xs px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full">
-                        +24.5%
-                      </span>
+                      <Text>Total Portfolio Value</Text>
+                      <Badge color="blue">+24.5%</Badge>
                     </div>
                     <div className="text-4xl font-bold">$124,582.40</div>
 
-                    <div className="h-32 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-xl relative overflow-hidden">
+                    <div className="h-32 bg-gradient-to-r from-orange-500/20 to-blue-500/20 rounded-xl relative overflow-hidden">
                       <svg
                         className="w-full h-full"
                         viewBox="0 0 300 100"
@@ -189,8 +186,8 @@ const HomePage: React.FC = () => {
                             x2="0%"
                             y2="100%"
                           >
-                            <stop offset="0%" stopColor="#10b981" />
-                            <stop offset="100%" stopColor="#06b6d4" />
+                            <stop offset="0%" stopColor="orange" />
+                            <stop offset="100%" stopColor="blue" />
                           </linearGradient>
                         </defs>
                       </svg>
@@ -204,18 +201,16 @@ const HomePage: React.FC = () => {
                       ].map((item, i) => (
                         <div
                           key={i}
-                          className="bg-white/5 rounded-xl p-4 border border-white/5 animate-fade-in-up"
+                          className="bg-black/5 dark:bg-white/5 rounded-xl p-4 border border-black/5 dark:border-white/5 animate-fade-in-up"
                           style={{ animationDelay: `${i * 100}ms` }}
                         >
-                          <div className="text-xs text-slate-400 mb-1">
-                            {item.coin}
-                          </div>
-                          <div className="text-sm font-semibold mb-1">
+                          <Text className="!text-xs mb-1">{item.coin}</Text>
+                          <Text className="!text-foreground font-semibold mb-1">
                             {item.amount}
-                          </div>
-                          <div className="text-xs text-emerald-400">
+                          </Text>
+                          <Text className="!text-xs !text-emerald-700 dark:!text-emerald-400">
                             {item.value}
-                          </div>
+                          </Text>
                         </div>
                       ))}
                     </div>

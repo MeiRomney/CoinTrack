@@ -13,3 +13,4 @@ export * from "../../ui-kits/text";
 export * from "../../ui-kits/textarea";
 export * from "../../ui-kits/fieldset";
 export * from "../../ui-kits/select";
+export * from "../../ui-kits/badge";
