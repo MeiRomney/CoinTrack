@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  Wallet,
-  TrendingUp,
-  Bell,
-  BarChart3,
-  ArrowRight,
-  Menu,
-  X,
-} from "lucide-react";
-import { Heading } from "../ui-kits/heading";
+import { Wallet, TrendingUp, Bell, BarChart3, ArrowRight } from "lucide-react";
+import { Heading, Subheading } from "../ui-kits/heading";
 import { Text } from "../ui-kits/text";
 import { Badge } from "../ui-kits/badge";
 
 const HomePage: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -142,11 +133,11 @@ const HomePage: React.FC = () => {
               {/* Dashboard Preview */}
               <div className="relative animate-slide-up-delayed">
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-blue-500 rounded-3xl blur-3xl opacity-20" />
-                <div className="relative bg-gradient-to-br from-zinc-200/50 to-zinc-300/50 dark:from-zinc-800/50 dark:to-zinc-900/50 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-3xl p-8 shadow-2xl">
+                <div className="relative bg-gradient-to-br from-neutral-200/50 to-neutral-300/50 dark:from-neutral-800/50 dark:to-neutral-900/50 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-3xl p-8 shadow-2xl">
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
                       <Text>Total Portfolio Value</Text>
-                      <Badge color="blue">+24.5%</Badge>
+                      <Badge color="green">+24.5%</Badge>
                     </div>
                     <div className="text-4xl font-bold">$124,582.40</div>
 
@@ -176,8 +167,8 @@ const HomePage: React.FC = () => {
                             x2="100%"
                             y2="0%"
                           >
-                            <stop offset="0%" stopColor="#10b981" />
-                            <stop offset="100%" stopColor="#06b6d4" />
+                            <stop offset="0%" stopColor="green" />
+                            <stop offset="100%" stopColor="green" />
                           </linearGradient>
                           <linearGradient
                             id="gradient-fill"
@@ -208,7 +199,7 @@ const HomePage: React.FC = () => {
                           <Text className="!text-foreground font-semibold mb-1">
                             {item.amount}
                           </Text>
-                          <Text className="!text-xs !text-emerald-700 dark:!text-emerald-400">
+                          <Text className="!text-xs !text-green-500">
                             {item.value}
                           </Text>
                         </div>
@@ -227,30 +218,30 @@ const HomePage: React.FC = () => {
             <div className="text-center mb-16 animate-fade-in">
               <h2 className="text-4xl lg:text-5xl font-bold mb-4">
                 Everything you need to
-                <span className="block mt-2 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                <span className="block mt-2 bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
                   master crypto
                 </span>
               </h2>
-              <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+              <Subheading className="!text-xl !text-muted-foreground">
                 Powerful features designed for both beginners and professional
                 traders
-              </p>
+              </Subheading>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="group relative bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm border border-white/5 rounded-2xl p-8 hover:border-emerald-500/30 transition-all duration-500 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-2 animate-fade-in-up"
+                  className="group relative bg-gradient-to-br from-neutral-200/40 to-neutral-300/40 dark:from-neutral-800/40 dark:to-neutral-900/40 backdrop-blur-sm border border-black/5 dark:border-white/5 rounded-2xl p-8 hover:border-orange-500/30 transition-all duration-500 hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-2 animate-fade-in-up"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                    <div className="text-emerald-400">{feature.icon}</div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500/20 to-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <div className="text-orange-400">{feature.icon}</div>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">
-                    {feature.description}
-                  </p>
+                  <Heading level={3} className="!font-bold mb-3">
+                    {feature.title}
+                  </Heading>
+                  <Text className="leading-relaxed">{feature.description}</Text>
                 </div>
               ))}
             </div>
@@ -260,38 +251,43 @@ const HomePage: React.FC = () => {
         {/* Testimonials Section */}
         <section className="relative py-24 px-6">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl lg:text-5xl font-bold text-center mb-16 animate-fade-in">
+            <Heading
+              level={2}
+              className="text-4xl lg:text-5xl font-bold text-center mb-4 animate-fade-in"
+            >
               Loved by crypto enthusiasts
-            </h2>
-
+            </Heading>
+            <Subheading className=" !text-xl !text-muted-foreground text-center mb-16 animate-fade-in">
+              Hear from our satisfied users who have transformed their crypto
+              experience with CoinTrack
+            </Subheading>
             <div className="grid md:grid-cols-3 gap-6 mb-16">
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm border border-white/5 rounded-2xl p-8 hover:border-white/10 transition-all animate-fade-in-up"
+                  className="bg-gradient-to-br from-neutral-200/40 to-neutral-300/40 dark:from-neutral-800/40 dark:to-neutral-900/40 backdrop-blur-sm border border-black/5 dark:border-white/5 rounded-2xl p-8 hover:border-black/10 dark:hover:border-white/10 transition-all animate-fade-in-up"
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
-                  <div className="text-emerald-400 text-4xl mb-4">"</div>
-                  <p className="text-slate-300 mb-6 leading-relaxed">
+                  <div className="text-orange-400 text-4xl mb-4">"</div>
+                  <Text className="!text-lg mb-6 leading-relaxed">
                     {testimonial.quote}
-                  </p>
+                  </Text>
                   <div>
-                    <div className="font-semibold">{testimonial.author}</div>
-                    <div className="text-sm text-slate-400">
-                      {testimonial.role}
-                    </div>
+                    <Subheading className="font-semibold">
+                      {testimonial.author}
+                    </Subheading>
+                    <Text>{testimonial.role}</Text>
                   </div>
                 </div>
               ))}
             </div>
-
             <div className="text-center animate-fade-in">
-              <p className="text-sm text-slate-400 mb-6">Supported Wallets</p>
+              <Text className="mb-6">Supported Wallets</Text>
               <div className="flex flex-wrap justify-center gap-8">
                 {walletLogos.map((wallet, index) => (
                   <div
                     key={index}
-                    className="px-6 py-3 bg-white/5 border border-white/5 rounded-xl text-sm font-medium hover:bg-white/10 transition-all"
+                    className="px-6 py-3 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-xl text-sm font-medium hover:bg-black/10 dark:hover:bg-white/10 transition-all"
                   >
                     {wallet}
                   </div>
@@ -304,43 +300,41 @@ const HomePage: React.FC = () => {
         {/* CTA Section */}
         <section className="relative py-24 px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="relative bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-12 text-center overflow-hidden animate-fade-in">
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 blur-3xl" />
+            <div className="relative bg-gradient-to-br from-orange-500/10 to-blue-500/10 backdrop-blur-xl border border-orange-500/20 rounded-3xl p-12 text-center overflow-hidden animate-fade-in">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-blue-500/5 blur-3xl" />
               <div className="relative z-10 space-y-6">
-                <h2 className="text-4xl lg:text-5xl font-bold">
+                <Heading className="!text-4xl lg:!text-5xl !font-bold">
                   Start tracking for just
-                  <span className="block mt-2 text-emerald-400">$5/month</span>
-                </h2>
-                <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+                  <span className="block mt-2 text-orange-400">$5/month</span>
+                </Heading>
+                <Text className="!text-xl max-w-2xl mx-auto">
                   Unlock unlimited wallet connections, advanced analytics, price
                   alerts, and historical charts
-                </p>
-                <button className="px-10 py-5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-xl text-lg font-bold hover:shadow-2xl hover:shadow-emerald-500/30 transition-all hover:scale-105 inline-flex items-center gap-2">
+                </Text>
+                <button className="px-10 py-5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-xl text-lg font-bold hover:shadow-2xl hover:shadow-orange-500/30 transition-all hover:scale-105 inline-flex items-center gap-2 cursor-pointer">
                   Start Tracking Now
                   <ArrowRight className="w-5 h-5" />
                 </button>
-                <p className="text-sm text-slate-400">
-                  14-day free trial • No credit card required
-                </p>
+                <Text>14-day free trial • No credit card required</Text>
               </div>
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="relative border-t border-white/5 py-12 px-6">
+        <footer className="relative border-t border-black/5 dark:border-white/5 py-12 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-4 gap-8 mb-8">
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-blue-500 rounded-lg flex items-center justify-center">
                     <TrendingUp className="w-6 h-6 text-slate-950" />
                   </div>
                   <span className="text-xl font-bold">CoinTrack</span>
                 </div>
-                <p className="text-sm text-slate-400">
+                <Text>
                   The most elegant way to track your crypto portfolio.
-                </p>
+                </Text>
               </div>
 
               <div>
@@ -348,19 +342,19 @@ const HomePage: React.FC = () => {
                 <div className="space-y-2">
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Features
                   </a>
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Pricing
                   </a>
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     API
                   </a>
@@ -372,19 +366,19 @@ const HomePage: React.FC = () => {
                 <div className="space-y-2">
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     About
                   </a>
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Privacy
                   </a>
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Terms
                   </a>
@@ -396,19 +390,19 @@ const HomePage: React.FC = () => {
                 <div className="space-y-2">
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Twitter
                   </a>
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Discord
                   </a>
                   <a
                     href="#"
-                    className="block text-sm text-slate-400 hover:text-emerald-400 transition-colors"
+                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Contact
                   </a>
@@ -416,14 +410,14 @@ const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-slate-400">
+            <div className="pt-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-sm text-neutral-500">
                 © 2026 CoinTrack. All rights reserved.
               </p>
               <div className="flex gap-6">
                 <a
                   href="#"
-                  className="text-slate-400 hover:text-emerald-400 transition-colors"
+                  className="text-neutral-500 hover:text-orange-400 transition-colors"
                 >
                   <svg
                     className="w-5 h-5"
@@ -435,7 +429,7 @@ const HomePage: React.FC = () => {
                 </a>
                 <a
                   href="#"
-                  className="text-slate-400 hover:text-emerald-400 transition-colors"
+                  className="text-neutral-500 hover:text-orange-400 transition-colors"
                 >
                   <svg
                     className="w-5 h-5"
@@ -447,7 +441,7 @@ const HomePage: React.FC = () => {
                 </a>
                 <a
                   href="#"
-                  className="text-slate-400 hover:text-emerald-400 transition-colors"
+                  className="text-neutral-500 hover:text-orange-400 transition-colors"
                 >
                   <svg
                     className="w-5 h-5"
@@ -461,92 +455,6 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </footer>
-
-        <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
-        
-        * {
-          font-family: 'DM Sans', sans-serif;
-        }
-
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.1; }
-          50% { opacity: 0.15; }
-        }
-
-        @keyframes pulse-slower {
-          0%, 100% { opacity: 0.08; }
-          50% { opacity: 0.12; }
-        }
-
-        @keyframes slide-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes draw-line {
-          from {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-          }
-          to {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 0;
-          }
-        }
-
-        .animate-pulse-slow {
-          animation: pulse-slow 4s ease-in-out infinite;
-        }
-
-        .animate-pulse-slower {
-          animation: pulse-slower 6s ease-in-out infinite;
-        }
-
-        .animate-slide-up {
-          animation: slide-up 0.8s ease-out forwards;
-        }
-
-        .animate-slide-up-delayed {
-          animation: slide-up 0.8s ease-out 0.2s forwards;
-          opacity: 0;
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out forwards;
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-draw-line {
-          animation: draw-line 2s ease-out forwards;
-        }
-      `}</style>
       </div>
     </div>
   );
