@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Wallet, TrendingUp, Bell, BarChart3, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  Wallet,
+  TrendingUp,
+  Bell,
+  BarChart3,
+  ArrowRight,
+  Star,
+} from "lucide-react";
 import { Heading, Subheading } from "../ui-kits/heading";
 import { Text } from "../ui-kits/text";
 import { Badge } from "../ui-kits/badge";
+import { Button } from "../ui-kits/button";
+import { routeConfig } from "../config/navigation/routes";
 
 const HomePage: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -69,6 +79,12 @@ const HomePage: React.FC = () => {
     "WalletConnect",
   ];
 
+  const stats = [
+    { value: "50+", label: "Wallets supported" },
+    { value: "Real-time", label: "Price updates" },
+    { value: "10k+", label: "Active users" },
+  ];
+
   return (
     <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen min-h-screen overflow-x-hidden">
       <div className="min-h-screen bg-gradient-to-r from-neutral-100 via-neutral-200 to-neutral-100 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 text-neutral-800 dark:text-white">
@@ -105,28 +121,36 @@ const HomePage: React.FC = () => {
                 </Text>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <button className="group px-8 py-4 bg-gradient-to-r from-orange-600 to-blue-600 rounded-xl text-lg font-semibold hover:shadow-2xl hover:shadow-orange-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2 text-white cursor-pointer">
-                    Connect Wallet
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                  <button className="px-8 py-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl text-lg font-semibold hover:bg-black/10 dark:hover:bg-white/10 transition-all backdrop-blur-sm cursor-pointer">
-                    Get Started
-                  </button>
+                  <Button
+                    href={routeConfig.portfolio}
+                    className="group !px-8 !py-4 bg-gradient-to-r from-orange-600 to-blue-600 text-lg font-semibold hover:shadow-2xl hover:shadow-orange-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2 text-white border-0 cursor-pointer"
+                  >
+                    View Portfolio
+                    <ArrowRight
+                      className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                      data-slot="icon"
+                    />
+                  </Button>
+                  <Button
+                    href={routeConfig.pricing}
+                    outline
+                    className="!px-8 !py-4 text-lg font-semibold border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:!bg-black/10 dark:!hover:bg-white/10 backdrop-blur-sm cursor-pointer"
+                  >
+                    See pricing
+                  </Button>
                 </div>
 
-                <div className="flex items-center gap-6 pt-6">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-slate-950"
-                      />
-                    ))}
-                  </div>
-                  <div className="text-sm">
-                    <div className="font-semibold">Join our community</div>
-                    <div className="text-slate-400">of successful traders</div>
-                  </div>
+                <div className="flex flex-wrap items-center gap-x-10 gap-y-4 pt-10 border-t border-black/5 dark:border-white/5 mt-10">
+                  {stats.map((stat, i) => (
+                    <div key={i} className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-foreground">
+                        {stat.value}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {stat.label}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -213,15 +237,18 @@ const HomePage: React.FC = () => {
         </section>
 
         {/* Features Section */}
-        <section className="relative py-24 px-6">
+        <section id="features" className="relative py-24 px-6 scroll-mt-20">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fade-in">
-              <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+              <Heading
+                level={2}
+                className="!text-4xl lg:!text-5xl !font-bold mb-4"
+              >
                 Everything you need to
                 <span className="block mt-2 bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
                   master crypto
                 </span>
-              </h2>
+              </Heading>
               <Subheading className="!text-xl !text-muted-foreground">
                 Powerful features designed for both beginners and professional
                 traders
@@ -268,7 +295,17 @@ const HomePage: React.FC = () => {
                   className="bg-gradient-to-br from-neutral-200/40 to-neutral-300/40 dark:from-neutral-800/40 dark:to-neutral-900/40 backdrop-blur-sm border border-black/5 dark:border-white/5 rounded-2xl p-8 hover:border-black/10 dark:hover:border-white/10 transition-all animate-fade-in-up"
                   style={{ animationDelay: `${index * 150}ms` }}
                 >
-                  <div className="text-orange-400 text-4xl mb-4">"</div>
+                  <div className="flex gap-0.5 mb-4">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star
+                        key={i}
+                        className="size-5 fill-amber-400 text-amber-400"
+                      />
+                    ))}
+                  </div>
+                  <div className="text-orange-400/80 text-3xl font-serif leading-none mb-2">
+                    "
+                  </div>
                   <Text className="!text-lg mb-6 leading-relaxed">
                     {testimonial.quote}
                   </Text>
@@ -311,10 +348,13 @@ const HomePage: React.FC = () => {
                   Unlock unlimited wallet connections, advanced analytics, price
                   alerts, and historical charts
                 </Text>
-                <button className="px-10 py-5 bg-gradient-to-r from-orange-500 to-blue-500 rounded-xl text-lg font-bold hover:shadow-2xl hover:shadow-orange-500/30 transition-all hover:scale-105 inline-flex items-center gap-2 cursor-pointer">
+                <Button
+                  href={routeConfig.pricing}
+                  className="!px-10 !py-5 bg-gradient-to-r from-orange-500 to-blue-500 text-lg font-bold hover:shadow-2xl hover:shadow-orange-500/30 transition-all hover:scale-105 inline-flex items-center gap-2 border-0 cursor-pointer"
+                >
                   Start Tracking Now
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+                  <ArrowRight className="w-5 h-5" data-slot="icon" />
+                </Button>
                 <Text>14-day free trial • No credit card required</Text>
               </div>
             </div>
@@ -340,48 +380,42 @@ const HomePage: React.FC = () => {
               <div>
                 <h3 className="font-semibold mb-4">Product</h3>
                 <div className="space-y-2">
-                  <a
-                    href="#"
+                  <Link
+                    to="#features"
                     className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Features
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to={routeConfig.pricing}
                     className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
                     Pricing
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to={routeConfig.portfolio}
                     className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
-                    API
-                  </a>
+                    Portfolio
+                  </Link>
                 </div>
               </div>
 
               <div>
-                <h3 className="font-semibold mb-4">Company</h3>
+                <h3 className="font-semibold mb-4">Explore</h3>
                 <div className="space-y-2">
-                  <a
-                    href="#"
+                  <Link
+                    to={routeConfig.portfolio}
                     className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
-                    About
-                  </a>
-                  <a
-                    href="#"
+                    Portfolio
+                  </Link>
+                  <Link
+                    to={routeConfig.crypto}
                     className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
                   >
-                    Privacy
-                  </a>
-                  <a
-                    href="#"
-                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
-                  >
-                    Terms
-                  </a>
+                    Crypto
+                  </Link>
                 </div>
               </div>
 
@@ -391,20 +425,18 @@ const HomePage: React.FC = () => {
                   <a
                     href="#"
                     className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Twitter
                   </a>
                   <a
                     href="#"
                     className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Discord
-                  </a>
-                  <a
-                    href="#"
-                    className="block text-sm text-neutral-500 hover:text-orange-400 transition-colors"
-                  >
-                    Contact
                   </a>
                 </div>
               </div>
