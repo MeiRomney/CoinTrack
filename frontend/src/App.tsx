@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LandingPage from "./pages/landing-page";
 import HomePage from "./pages/home-page";
 import { DashboardLayout } from "./components";
 import { ThemeProvider } from "./contexts/theme-context";
@@ -10,10 +11,11 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<DashboardLayout />}>
-        <Route path="/dashboard" element={<HomePage />} />
-        <Route path="/portfolio" element={<PortfolioPage />} />
-        <Route path="/crypto" element={<CryptoPage />} />
-        <Route path="/pricing" element={<PricingPage />} />
+        <Route index element={<LandingPage />} />
+        <Route path="dashboard" element={<HomePage />} />
+        <Route path="portfolio" element={<PortfolioPage />} />
+        <Route path="crypto" element={<CryptoPage />} />
+        <Route path="pricing" element={<PricingPage />} />
       </Route>
     </Routes>
   );

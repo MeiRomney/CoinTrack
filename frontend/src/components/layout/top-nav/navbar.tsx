@@ -52,12 +52,10 @@ export function Navbar({ className = "" }: NavbarProps) {
   const [showLanguageSubmenu, setShowLanguageSubmenu] = useState(false);
   const [showCurrencySubmenu, setShowCurrencySubmenu] = useState(false);
 
-  // Helper function to determine if a route is current
+  // Helper: Home is active only on /dashboard; landing "/" has no nav underline
   const isCurrentRoute = (route: string) => {
-    if (route === "/dashboard" && location.pathname === "/") return true;
-    if (route === "/dashboard" && location.pathname === "/dashboard")
-      return true;
-    return location.pathname.startsWith(route) && route !== "/dashboard";
+    if (route === "/dashboard") return location.pathname === "/dashboard";
+    return location.pathname.startsWith(route);
   };
 
   return (
@@ -65,11 +63,17 @@ export function Navbar({ className = "" }: NavbarProps) {
       <NavbarContent>
         <NavbarInner>
           <NavbarSection className="flex px-2 lg:px-0">
-            <NavbarLogo src="/img/cointrack-logo.svg" alt="CoinTrack" />
+            <NavbarLogo
+              src="/img/cointrack-logo.svg"
+              alt="CoinTrack"
+              className="cursor-pointer"
+              onClick={() => navigate("/")}
+            />
             <NavbarLogo
               src="/img/cointrack-typography.svg"
               alt="CoinTrack"
-              className="!max-w-25 ml-4"
+              className="!max-w-25 ml-4 cursor-pointer"
+              onClick={() => navigate("/")}
             />
             <NavbarLinks>
               {primaryGroupNav.map((item) => (

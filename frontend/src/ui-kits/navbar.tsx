@@ -61,14 +61,16 @@ export function NavbarLogo({
   src,
   alt = "Logo",
   className,
+  onClick,
 }: {
   src: string;
   alt?: string;
   className?: string;
+  onClick?: () => void;
 }) {
   return (
     <div className={clsx(className, "flex shrink-0 items-center")}>
-      <img src={src} alt={alt} className="h-8 w-auto" />
+      <img src={src} alt={alt} className="h-8 w-auto" onClick={onClick} />
     </div>
   );
 }
