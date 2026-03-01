@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { Search, TrendingUp, Coins } from "lucide-react";
+// import { useQuery } from "@tanstack/react-query";
+import { Search, TrendingUp, Coins, AlertCircle } from "lucide-react";
 import { Heading, Subheading } from "../ui-kits/heading";
 import { Text } from "../ui-kits/text";
 import { Badge } from "../ui-kits/badge";
 import { Input } from "../ui-kits/input";
 import { InputGroup } from "../ui-kits/input";
+// import { fetchTopCryptos } from "../services/api";
 
-// Mock crypto market data – replace with API when available
 const MOCK_CRYPTO = [
   {
     rank: 1,
@@ -129,18 +130,52 @@ function formatCompact(n: number): string {
 const CryptoPage: React.FC = () => {
   const [search, setSearch] = useState("");
 
+  // Fetch data from API
+  // const {
+  //   data: cryptoData = [],
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["topCryptos"],
+  //   queryFn: () => fetchTopCryptos(100),
+  //   staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+  //   retry: 2,
+  //   enabled: false, // toggle when API is ready
+  // });
+
+  // Fall back to mock data if API fails
+  // const currencies = error ? MOCK_CRYPTO : cryptoData;
+  // Replace the useQuery block with this:
+  const [isLoading] = useState(false);
+  const error = null;
+  const currencies = MOCK_CRYPTO;
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return MOCK_CRYPTO;
-    return MOCK_CRYPTO.filter(
+    if (!q) return currencies;
+    return currencies.filter(
       (c) =>
         c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q),
     );
-  }, [search]);
+  }, [search, currencies]);
 
   return (
     <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8">
       <div className="space-y-8">
+        {/* Error alert */}
+        {error && (
+          <div className="rounded-2xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/20 p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-red-900 dark:text-red-200">
+                Failed to load crypto data
+              </p>
+              <p className="text-sm text-red-800 dark:text-red-300 mt-1">
+                Displaying cached data. Please try again later.
+              </p>
+            </div>
+          </div>
+        )}
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
@@ -247,7 +282,19 @@ const CryptoPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {filtered.length === 0 ? (
+                {isLoading ? (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className="py-12 px-6 text-center text-muted-foreground"
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
+                        Loading cryptocurrencies...
+                      </div>
+                    </td>
+                  </tr>
+                ) : filtered.length === 0 ? (
                   <tr>
                     <td
                       colSpan={7}
@@ -284,14 +331,14 @@ const CryptoPage: React.FC = () => {
                         {formatPrice(crypto.price)}
                       </td>
                       <td className="py-4 px-6 text-right">
-                        {crypto.change24h >= 0 ? (
+                        {(crypto.change24h ?? 0) >= 0 ? (
                           <Badge color="green">+{crypto.change24h}%</Badge>
                         ) : (
                           <Badge color="red">{crypto.change24h}%</Badge>
                         )}
                       </td>
                       <td className="py-4 px-6 text-right">
-                        {crypto.change7d >= 0 ? (
+                        {(crypto.change7d ?? 0) >= 0 ? (
                           <span className="text-green-500 font-medium">
                             +{crypto.change7d}%
                           </span>
