@@ -12,128 +12,189 @@
  * Do not edit the class manually.
  */
 
-import type { AxiosRequestConfig, AxiosInstance } from "axios";
+import type { Configuration } from "./configuration";
 import type { RequestArgs } from "./base";
+import type { AxiosInstance, AxiosResponse } from "axios";
+import { RequiredError } from "./base";
 
 /**
- * Dummy base URL
+ *
+ * @export
  */
 export const DUMMY_BASE_URL = "https://example.com";
 
 /**
- * Assert that a parameter is defined
+ *
+ * @throws {RequiredError}
+ * @export
  */
-export function assertParamExists(
-  funcName: string,
-  paramsObj: any,
+export const assertParamExists = function (
+  functionName: string,
   paramName: string,
+  paramValue: unknown,
 ) {
-  if (paramsObj && paramsObj[paramName] === undefined) {
-    throw new Error(
-      `Missing required parameter ${paramName} when calling ${funcName}`,
+  if (paramValue === null || paramValue === undefined) {
+    throw new RequiredError(
+      paramName,
+      `Required parameter ${paramName} was null or undefined when calling ${functionName}.`,
     );
   }
-}
+};
 
 /**
- * Set search params
+ *
+ * @export
  */
-export function setSearchParams(url: URL, ...objects: any[]) {
-  const searchParams = new URLSearchParams();
-  for (const obj of objects) {
-    for (const key in obj) {
-      if (obj[key] !== undefined) {
-        searchParams.set(key, String(obj[key]));
-      }
-    }
-  }
-  url.search = searchParams.toString();
-}
-
-/**
- * Serialize data
- */
-export function serializeDataIfNeeded(
-  value: any,
-  _requestOptions: AxiosRequestConfig,
+export const setApiKeyToObject = async function (
+  object: any,
+  keyParamName: string,
+  configuration?: Configuration,
 ) {
-  if (value && typeof value === "object") {
-    if (typeof FormData !== "undefined" && value instanceof FormData) {
-      return value;
+  if (configuration && configuration.apiKey) {
+    const localVarApiKeyValue =
+      typeof configuration.apiKey === "function"
+        ? await configuration.apiKey(keyParamName)
+        : await configuration.apiKey;
+    object[keyParamName] = localVarApiKeyValue;
+  }
+};
+
+/**
+ *
+ * @export
+ */
+export const setBasicAuthToObject = function (
+  object: any,
+  configuration?: Configuration,
+) {
+  if (configuration && (configuration.username || configuration.password)) {
+    object["auth"] = {
+      username: configuration.username,
+      password: configuration.password,
+    };
+  }
+};
+
+/**
+ *
+ * @export
+ */
+export const setBearerAuthToObject = async function (
+  object: any,
+  configuration?: Configuration,
+) {
+  if (configuration && configuration.accessToken) {
+    const accessToken =
+      typeof configuration.accessToken === "function"
+        ? await configuration.accessToken()
+        : await configuration.accessToken;
+    object["Authorization"] = "Bearer " + accessToken;
+  }
+};
+
+/**
+ *
+ * @export
+ */
+export const setOAuthToObject = async function (
+  object: any,
+  name: string,
+  scopes: string[],
+  configuration?: Configuration,
+) {
+  if (configuration && configuration.accessToken) {
+    const localVarAccessTokenValue =
+      typeof configuration.accessToken === "function"
+        ? await configuration.accessToken(name, scopes)
+        : await configuration.accessToken;
+    object["Authorization"] = "Bearer " + localVarAccessTokenValue;
+  }
+};
+
+function setFlattenedQueryParams(
+  urlSearchParams: URLSearchParams,
+  parameter: any,
+  key: string = "",
+): void {
+  if (parameter == null) return;
+  if (typeof parameter === "object") {
+    if (Array.isArray(parameter)) {
+      (parameter as any[]).forEach((item) =>
+        setFlattenedQueryParams(urlSearchParams, item, key),
+      );
+    } else {
+      Object.keys(parameter).forEach((currentKey) =>
+        setFlattenedQueryParams(
+          urlSearchParams,
+          parameter[currentKey],
+          `${key}${key !== "" ? "." : ""}${currentKey}`,
+        ),
+      );
     }
-    if (typeof Blob !== "undefined" && value instanceof Blob) {
-      return value;
-    }
-    if (typeof File !== "undefined" && value instanceof File) {
-      return value;
+  } else {
+    if (urlSearchParams.has(key)) {
+      urlSearchParams.append(key, parameter);
+    } else {
+      urlSearchParams.set(key, parameter);
     }
   }
-  return value;
 }
 
 /**
- * Convert path to string
+ *
+ * @export
  */
-export function toPathString(url: URL): string {
+export const setSearchParams = function (url: URL, ...objects: any[]) {
+  const searchParams = new URLSearchParams(url.search);
+  setFlattenedQueryParams(searchParams, objects);
+  url.search = searchParams.toString();
+};
+
+/**
+ *
+ * @export
+ */
+export const serializeDataIfNeeded = function (
+  value: any,
+  requestOptions: any,
+  configuration?: Configuration,
+) {
+  const nonString = typeof value !== "string";
+  const needsSerialization =
+    nonString && configuration && configuration.isJsonMime
+      ? configuration.isJsonMime(requestOptions.headers["Content-Type"])
+      : nonString;
+  return needsSerialization
+    ? JSON.stringify(value !== undefined ? value : {})
+    : value || "";
+};
+
+/**
+ *
+ * @export
+ */
+export const toPathString = function (url: URL) {
   return url.pathname + url.search + url.hash;
-}
+};
 
 /**
- * Create request function
+ *
+ * @export
  */
-export function createRequestFunction(
+export const createRequestFunction = function (
   axiosArgs: RequestArgs,
   globalAxios: AxiosInstance,
   BASE_PATH: string,
-  _configuration?: any,
-): (...args: any[]) => Promise<any> {
-  return async (
+  configuration?: Configuration,
+) {
+  return <T = unknown, R = AxiosResponse<T>>(
     axios: AxiosInstance = globalAxios,
     basePath: string = BASE_PATH,
   ) => {
     const axiosRequestArgs = {
       ...axiosArgs.options,
-      url: basePath + axiosArgs.url,
+      url: (configuration?.basePath || basePath) + axiosArgs.url,
     };
-    return axios.request(axiosRequestArgs);
+    return axios.request<T, R>(axiosRequestArgs);
   };
-}
-
-/**
- * Set API key to object
- */
-export function setApiKeyToObject(obj: any, keyParamName: string, value: any) {
-  obj[keyParamName] = value;
-}
-
-/**
- * Set basic auth to object
- */
-export function setBasicAuthToObject(
-  obj: any,
-  username: string,
-  password: string,
-) {
-  obj["auth"] = { username, password };
-}
-
-/**
- * Set bearer auth to object
- */
-export function setBearerAuthToObject(obj: any, token: string) {
-  obj["headers"] = obj["headers"] || {};
-  obj["headers"]["Authorization"] = `Bearer ${token}`;
-}
-
-/**
- * Set OAuth to object
- */
-export function setOAuthToObject(
-  obj: any,
-  _name: string,
-  _scopes: string[],
-  token: string,
-) {
-  obj["headers"] = obj["headers"] || {};
-  obj["headers"]["Authorization"] = `Bearer ${token}`;
-}
+};
