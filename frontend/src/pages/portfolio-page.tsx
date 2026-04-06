@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Wallet, TrendingUp, PieChart as PieChartIcon } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Wallet, TrendingUp, PieChart as PieChartIcon, AlertCircle } from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -14,6 +14,7 @@ import {
 import { Heading, Subheading } from "../ui-kits/heading";
 import { Text } from "../ui-kits/text";
 import { Badge } from "../ui-kits/badge";
+import { fetchPortfolio } from "../services/api";
 
 // Mock portfolio data – replace with API/context when available
 const MOCK_HOLDINGS = [
@@ -59,6 +60,8 @@ const MOCK_HOLDINGS = [
   },
 ];
 
+const MOCK_TOTAL_VALUE = MOCK_HOLDINGS.reduce((sum, h) => sum + h.value, 0);
+
 const MOCK_HISTORY = [
   { date: "Mon", value: 38000 },
   { date: "Tue", value: 39500 },
@@ -78,25 +81,103 @@ const ALLOCATION_COLORS = [
 ];
 
 const PortfolioPage: React.FC = () => {
+  type PortfolioRow = (typeof MOCK_HOLDINGS)[number];
+
+  const [holdings, setHoldings] = useState<PortfolioRow[]>(MOCK_HOLDINGS);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+
+    fetchPortfolio()
+      .then((res) => {
+        if (!alive) return;
+        setHoldings(
+          res.holdings.map((h) => ({
+            symbol: h.symbol,
+            name: h.name,
+            amount: h.amount,
+            value: h.valueUsd,
+            price: h.amount > 0 ? h.valueUsd / h.amount : 0,
+            change24h: h.change24h,
+          })),
+        );
+      })
+      .catch((e) => {
+        if (!alive) return;
+        const message =
+          e instanceof Error ? e.message : "Failed to load portfolio data";
+        setError(message);
+        setHoldings(MOCK_HOLDINGS);
+      })
+      .finally(() => {
+        if (!alive) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const totalValue = useMemo(
-    () => MOCK_HOLDINGS.reduce((sum, h) => sum + h.value, 0),
-    [],
+    () => holdings.reduce((sum, h) => sum + h.value, 0),
+    [holdings],
   );
-  const change24h = 2.8;
-  const change7d = 5.2;
+
+  const change24h = useMemo(() => {
+    if (totalValue <= 0) return 0;
+    const weighted = holdings.reduce(
+      (sum, h) => sum + h.value * h.change24h,
+      0,
+    );
+    return weighted / totalValue;
+  }, [holdings, totalValue]);
+
+  // We don't currently have per-asset 7d change from the API,
+  // so we estimate it from the 24h change for a consistent UI.
+  const change7d = useMemo(() => {
+    const estimate = change24h * 1.8;
+    return Math.max(-50, Math.min(50, estimate));
+  }, [change24h]);
 
   const allocationData = useMemo(
     () =>
-      MOCK_HOLDINGS.map((h) => ({
+      holdings.map((h) => ({
         name: h.symbol,
         value: h.value,
       })),
-    [],
+    [holdings],
+  );
+
+  const historyData = useMemo(
+    () =>
+      MOCK_HISTORY.map((p) => ({
+        date: p.date,
+        value: (p.value / MOCK_TOTAL_VALUE) * totalValue,
+      })),
+    [totalValue],
   );
 
   return (
     <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8">
       <div className="space-y-8">
+        {/* Error alert */}
+        {error && (
+          <div className="rounded-2xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/20 p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-red-900 dark:text-red-200">
+                Failed to load portfolio
+              </p>
+              <p className="text-sm text-red-800 dark:text-red-300 mt-1">
+                {error}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
@@ -138,9 +219,15 @@ const PortfolioPage: React.FC = () => {
                 <Text className="!text-sm !text-muted-foreground">
                   24h change
                 </Text>
-                <p className="text-2xl font-bold text-green-500">
-                  +{change24h}%
-                </p>
+                {change24h >= 0 ? (
+                  <p className="text-2xl font-bold text-green-500">
+                    +{change24h}%
+                  </p>
+                ) : (
+                  <p className="text-2xl font-bold text-red-500">
+                    {change24h}%
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -153,7 +240,13 @@ const PortfolioPage: React.FC = () => {
                 <Text className="!text-sm !text-muted-foreground">
                   7d change
                 </Text>
-                <p className="text-2xl font-bold text-blue-500">+{change7d}%</p>
+                {change7d >= 0 ? (
+                  <p className="text-2xl font-bold text-blue-500">
+                    +{change7d}%
+                  </p>
+                ) : (
+                  <p className="text-2xl font-bold text-red-500">{change7d}%</p>
+                )}
               </div>
             </div>
           </div>
@@ -165,7 +258,7 @@ const PortfolioPage: React.FC = () => {
             <Subheading className="mb-4">Portfolio value (7d)</Subheading>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={MOCK_HISTORY}>
+                <AreaChart data={historyData}>
                   <defs>
                     <linearGradient
                       id="valueGradient"
@@ -273,7 +366,20 @@ const PortfolioPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {MOCK_HOLDINGS.map((holding) => (
+                {isLoading ? (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="py-12 px-6 text-center text-muted-foreground"
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
+                        Loading holdings...
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  holdings.map((holding) => (
                   <tr
                     key={holding.symbol}
                     className="border-b border-zinc-100 dark:border-zinc-800/80 last:border-0 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
@@ -313,7 +419,8 @@ const PortfolioPage: React.FC = () => {
                       )}
                     </td>
                   </tr>
-                ))}
+                  ))
+                )}
               </tbody>
             </table>
           </div>

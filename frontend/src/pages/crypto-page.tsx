@@ -1,12 +1,11 @@
-import React, { useMemo, useState } from "react";
-// import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useMemo, useState } from "react";
 import { Search, TrendingUp, Coins, AlertCircle } from "lucide-react";
 import { Heading, Subheading } from "../ui-kits/heading";
 import { Text } from "../ui-kits/text";
 import { Badge } from "../ui-kits/badge";
 import { Input } from "../ui-kits/input";
 import { InputGroup } from "../ui-kits/input";
-// import { fetchTopCryptos } from "../services/api";
+import { fetchTopCryptos } from "../services/api";
 
 const MOCK_CRYPTO = [
   {
@@ -111,6 +110,17 @@ const MOCK_CRYPTO = [
   },
 ];
 
+type CryptoTableRow = {
+  rank: number;
+  symbol: string;
+  name: string;
+  price: number;
+  change24h: number | null;
+  change7d: number | null;
+  marketCap: number;
+  volume24h: number;
+};
+
 function formatPrice(n: number): string {
   if (n >= 1000)
     return `$${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
@@ -130,25 +140,62 @@ function formatCompact(n: number): string {
 const CryptoPage: React.FC = () => {
   const [search, setSearch] = useState("");
 
-  // Fetch data from API
-  // const {
-  //   data: cryptoData = [],
-  //   isLoading,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["topCryptos"],
-  //   queryFn: () => fetchTopCryptos(100),
-  //   staleTime: 1000 * 60 * 5, // Cache for 5 minutes
-  //   retry: 2,
-  //   enabled: false, // toggle when API is ready
-  // });
+  const [currencies, setCurrencies] = useState<CryptoTableRow[]>(
+    MOCK_CRYPTO as CryptoTableRow[],
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fall back to mock data if API fails
-  // const currencies = error ? MOCK_CRYPTO : cryptoData;
-  // Replace the useQuery block with this:
-  const [isLoading] = useState(false);
-  const error = null;
-  const currencies = MOCK_CRYPTO;
+  useEffect(() => {
+    let alive = true;
+
+    fetchTopCryptos(10)
+      .then((data) => {
+        if (!alive) return;
+        setCurrencies(
+          data.map((c) => ({
+            rank: c.rank,
+            symbol: c.symbol,
+            name: c.name,
+            price: c.price,
+            marketCap: c.marketCap,
+            volume24h: c.volume24h,
+            change24h: c.change24h,
+            change7d: c.change7d,
+          })),
+        );
+      })
+      .catch((e) => {
+        if (!alive) return;
+        const message =
+          e instanceof Error ? e.message : "Failed to load crypto data";
+        setError(message);
+        setCurrencies(MOCK_CRYPTO as CryptoTableRow[]);
+      })
+      .finally(() => {
+        if (!alive) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const marketStats = useMemo(() => {
+    const totalMarketCap = currencies.reduce(
+      (sum, c) => sum + (c.marketCap || 0),
+      0,
+    );
+    const totalVolume24h = currencies.reduce(
+      (sum, c) => sum + c.volume24h,
+      0,
+    );
+    const btc = currencies.find((c) => c.symbol === "BTC");
+    const btcDom = totalMarketCap > 0 && btc ? (btc.marketCap / totalMarketCap) * 100 : 0;
+
+    return { totalMarketCap, totalVolume24h, btcDom };
+  }, [currencies]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -214,7 +261,9 @@ const CryptoPage: React.FC = () => {
                 <Text className="!text-sm !text-muted-foreground">
                   Market cap
                 </Text>
-                <p className="text-xl font-bold text-foreground">$2.14T</p>
+                <p className="text-xl font-bold text-foreground">
+                  {formatCompact(marketStats.totalMarketCap)}
+                </p>
               </div>
             </div>
           </div>
@@ -227,7 +276,9 @@ const CryptoPage: React.FC = () => {
                 <Text className="!text-sm !text-muted-foreground">
                   BTC dominance
                 </Text>
-                <p className="text-xl font-bold text-foreground">52.4%</p>
+                <p className="text-xl font-bold text-foreground">
+                  {marketStats.btcDom.toFixed(1)}%
+                </p>
               </div>
             </div>
           </div>
@@ -240,7 +291,9 @@ const CryptoPage: React.FC = () => {
                 <Text className="!text-sm !text-muted-foreground">
                   24h volume
                 </Text>
-                <p className="text-xl font-bold text-foreground">$98.2B</p>
+                <p className="text-xl font-bold text-foreground">
+                  {formatCompact(marketStats.totalVolume24h)}
+                </p>
               </div>
             </div>
           </div>

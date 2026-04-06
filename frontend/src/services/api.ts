@@ -48,4 +48,22 @@ export const fetchTopCryptos = async (
   return response.data.data;
 };
 
+export interface PortfolioHolding {
+  symbol: string;
+  name: string;
+  amount: number;
+  valueUsd: number;
+  change24h: number;
+}
+
+export interface PortfolioResponse {
+  totalValueUsd: number;
+  holdings: PortfolioHolding[];
+}
+
+export const fetchPortfolio = async (): Promise<PortfolioResponse> => {
+  const response = await apiClient.get<PortfolioResponse>("/api/portfolio");
+  return response.data;
+};
+
 export default apiClient;

@@ -1,6 +1,6 @@
 import type { Express, Request, Response, NextFunction } from "express";
-import { cryptoRouter } from "./routes-crypto.ts";
-import { portfolioRouter } from "./routes-portfolio.ts";
+import { cryptoRouter } from "./routes-crypto.js";
+import { portfolioRouter } from "./routes-portfolio.js";
 
 export function registerRoutes(app: Express) {
   // Health check
