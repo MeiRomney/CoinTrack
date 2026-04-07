@@ -1,6 +1,7 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { cryptoRouter } from "./routes-crypto.js";
 import { portfolioRouter } from "./routes-portfolio.js";
+import testRouter from "./test.js";
 
 export function registerRoutes(app: Express) {
   // Health check
@@ -11,6 +12,7 @@ export function registerRoutes(app: Express) {
   // Grouped API routes
   app.use("/api/crypto", cryptoRouter);
   app.use("/api/portfolio", portfolioRouter);
+  app.use("/api/test", testRouter);
 
   // 404 for unknown API routes
   app.use("/api", (req: Request, res: Response, next: NextFunction) => {

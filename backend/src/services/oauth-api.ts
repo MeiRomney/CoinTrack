@@ -1,6 +1,7 @@
-import axios, { AxiosInstance } from "axios";
-import config from "../config";
-import { getLogger } from "../utils/logger";
+import axios from "axios";
+import type { AxiosInstance } from "axios";
+import config from "../config.js";
+import { getLogger } from "../utils/logger.js";
 
 const logger = getLogger();
 
@@ -56,12 +57,17 @@ class OAuthApiClient {
     }
 
     try {
+      // Use service client credentials if available, otherwise use app credentials
+      const clientId = config.oauth.serviceClientId || config.oauth.clientId;
+      const clientSecret =
+        config.oauth.serviceClientSecret || config.oauth.clientSecret;
+
       const response = await axios.post(
         `${config.oauth.serverUrl}/oauth2/token`,
         new URLSearchParams({
           grant_type: "client_credentials",
-          client_id: config.oauth.serviceClientId,
-          client_secret: config.oauth.serviceClientSecret,
+          client_id: clientId,
+          client_secret: clientSecret,
           scope:
             "auth:organization:users auth:organization:users:create auth:organization:users:modify:roles auth:organization:roles",
         }).toString(),

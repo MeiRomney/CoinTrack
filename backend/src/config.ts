@@ -15,6 +15,8 @@ export interface Config {
     callbackUrl: string;
     serverUrl: string;
     appScopes: string[];
+    serviceClientId?: string;
+    serviceClientSecret?: string;
 
     // authorizationUrl: string;
     // tokenUrl: string;
@@ -115,6 +117,12 @@ export const config: Config = {
     callbackUrl: getEnvVar("OAUTH_CALLBACK_URL"),
     serverUrl: getEnvVar("OAUTH_SERVER_URL"),
     appScopes: getEnvVar("OAUTH_APP_SCOPES").split(" "),
+    ...(process.env.OAUTH_SERVICE_CLIENT_ID && {
+      serviceClientId: process.env.OAUTH_SERVICE_CLIENT_ID,
+    }),
+    ...(process.env.OAUTH_SERVICE_CLIENT_SECRET && {
+      serviceClientSecret: process.env.OAUTH_SERVICE_CLIENT_SECRET,
+    }),
 
     // authorizationUrl: getEnvVar('OAUTH_AUTHORIZATION_URL'),
     // tokenUrl: getEnvVar('OAUTH_TOKEN_URL'),

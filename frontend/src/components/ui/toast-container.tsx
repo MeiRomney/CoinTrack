@@ -1,7 +1,7 @@
 import React from "react";
 import {
   useNotifications,
-  Notification,
+  type Notification,
 } from "../../contexts/notification-context.tsx";
 
 const ToastContainer: React.FC = () => {

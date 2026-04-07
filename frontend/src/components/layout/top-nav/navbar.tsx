@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTheme } from "../../../contexts/theme-context";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -43,7 +43,7 @@ interface NavbarProps {
 }
 
 export function Navbar({ className = "" }: NavbarProps) {
-  const { theme, setTheme, actualTheme } = useTheme();
+  const { setTheme, actualTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

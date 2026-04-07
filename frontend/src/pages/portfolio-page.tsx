@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Wallet, TrendingUp, PieChart as PieChartIcon, AlertCircle } from "lucide-react";
+import {
+  Wallet,
+  TrendingUp,
+  PieChart as PieChartIcon,
+  AlertCircle,
+} from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -285,8 +290,8 @@ const PortfolioPage: React.FC = () => {
                     width={40}
                   />
                   <Tooltip
-                    formatter={(value: number) => [
-                      `$${value.toLocaleString()}`,
+                    formatter={(value) => [
+                      `$${(value as number).toLocaleString()}`,
                       "Value",
                     ]}
                     contentStyle={{
@@ -320,7 +325,7 @@ const PortfolioPage: React.FC = () => {
                     dataKey="value"
                     nameKey="name"
                     label={({ name, percent }) =>
-                      `${name} ${(percent * 100).toFixed(0)}%`
+                      `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
                     }
                   >
                     {allocationData.map((_, index) => (
@@ -380,45 +385,45 @@ const PortfolioPage: React.FC = () => {
                   </tr>
                 ) : (
                   holdings.map((holding) => (
-                  <tr
-                    key={holding.symbol}
-                    className="border-b border-zinc-100 dark:border-zinc-800/80 last:border-0 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
-                  >
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center text-white text-sm font-bold">
-                          {holding.symbol.slice(0, 1)}
+                    <tr
+                      key={holding.symbol}
+                      className="border-b border-zinc-100 dark:border-zinc-800/80 last:border-0 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
+                    >
+                      <td className="py-4 px-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                            {holding.symbol.slice(0, 1)}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-foreground">
+                              {holding.symbol}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {holding.name}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-semibold text-foreground">
-                            {holding.symbol}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            {holding.name}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 text-right font-medium">
-                      {holding.amount.toLocaleString()}
-                    </td>
-                    <td className="py-4 px-6 text-right text-muted-foreground">
-                      ${holding.price.toLocaleString()}
-                    </td>
-                    <td className="py-4 px-6 text-right font-semibold">
-                      $
-                      {holding.value.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      {holding.change24h >= 0 ? (
-                        <Badge color="green">+{holding.change24h}%</Badge>
-                      ) : (
-                        <Badge color="red">{holding.change24h}%</Badge>
-                      )}
-                    </td>
-                  </tr>
+                      </td>
+                      <td className="py-4 px-6 text-right font-medium">
+                        {holding.amount.toLocaleString()}
+                      </td>
+                      <td className="py-4 px-6 text-right text-muted-foreground">
+                        ${holding.price.toLocaleString()}
+                      </td>
+                      <td className="py-4 px-6 text-right font-semibold">
+                        $
+                        {holding.value.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                        })}
+                      </td>
+                      <td className="py-4 px-6 text-right">
+                        {holding.change24h >= 0 ? (
+                          <Badge color="green">+{holding.change24h}%</Badge>
+                        ) : (
+                          <Badge color="red">{holding.change24h}%</Badge>
+                        )}
+                      </td>
+                    </tr>
                   ))
                 )}
               </tbody>
