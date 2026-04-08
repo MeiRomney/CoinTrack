@@ -20,6 +20,8 @@ import { Heading, Subheading } from "../ui-kits/heading";
 import { Text } from "../ui-kits/text";
 import { Badge } from "../ui-kits/badge";
 import { fetchPortfolio } from "../services/api";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { WalletDisplay } from "../components/ui/wallet-display";
 
 // Mock portfolio data – replace with API/context when available
 const MOCK_HOLDINGS = [
@@ -192,6 +194,40 @@ const PortfolioPage: React.FC = () => {
             <Text className="mt-1">
               Track your holdings and allocation in one place
             </Text>
+          </div>
+          <ConnectButton />
+        </div>
+
+        {/* Wallet Connection Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <WalletDisplay />
+          </div>
+          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 shadow-sm">
+            <h3 className="font-semibold text-foreground mb-4">
+              Connect Wallet
+            </h3>
+            <Text className="!text-sm mb-4">
+              Connect your crypto wallet to view real-time holdings and balances
+              across multiple chains.
+            </Text>
+            <div className="space-y-2 text-sm">
+              <p className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-green-500">✓</span> Ethereum
+              </p>
+              <p className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-green-500">✓</span> Polygon
+              </p>
+              <p className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-green-500">✓</span> Arbitrum
+              </p>
+              <p className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-green-500">✓</span> Optimism
+              </p>
+              <p className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-green-500">✓</span> Base
+              </p>
+            </div>
           </div>
         </div>
 
