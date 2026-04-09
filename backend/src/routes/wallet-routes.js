@@ -131,7 +131,9 @@ walletRouter.post("/multi-chain", async (req, res) => {
     catch (error) {
         console.error("Error in /wallet/multi-chain:", error);
         res.status(500).json({
-            error: error instanceof Error ? error.message : "Failed to fetch multi-chain data",
+            error: error instanceof Error
+                ? error.message
+                : "Failed to fetch multi-chain data",
         });
     }
 });

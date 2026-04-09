@@ -2,6 +2,7 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { cryptoRouter } from "./routes-crypto.js";
 import { portfolioRouter } from "./routes-portfolio.js";
 import { walletRouter } from "./wallet-routes.js";
+import { accountRouter } from "./account-routes.js";
 import testRouter from "./test.js";
 
 export function registerRoutes(app: Express) {
@@ -14,6 +15,7 @@ export function registerRoutes(app: Express) {
   app.use("/api/crypto", cryptoRouter);
   app.use("/api/portfolio", portfolioRouter);
   app.use("/api/wallet", walletRouter);
+  app.use("/api/account", accountRouter);
   app.use("/api/test", testRouter);
 
   // 404 for unknown API routes

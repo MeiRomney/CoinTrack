@@ -8,32 +8,27 @@ const ERC20_ABI = [
 ];
 const CHAIN_CONFIGS = {
     1: {
-        rpcUrl: process.env.ETHEREUM_RPC_URL ||
-            "https://eth.llamarpc.com",
+        rpcUrl: process.env.ETHEREUM_RPC_URL || "https://eth.llamarpc.com",
         etherscanApiUrl: "https://api.etherscan.io/api",
         etherscanApiKey: process.env.ETHERSCAN_API_KEY || "",
     },
     11155111: {
-        rpcUrl: process.env.SEPOLIA_RPC_URL ||
-            "https://sepolia.drpc.org",
+        rpcUrl: process.env.SEPOLIA_RPC_URL || "https://sepolia.drpc.org",
         etherscanApiUrl: "https://api-sepolia.etherscan.io/api",
         etherscanApiKey: process.env.ETHERSCAN_API_KEY || "",
     },
     137: {
-        rpcUrl: process.env.POLYGON_RPC_URL ||
-            "https://polygon.llamarpc.com",
+        rpcUrl: process.env.POLYGON_RPC_URL || "https://polygon.llamarpc.com",
         etherscanApiUrl: "https://api.polygonscan.com/api",
         etherscanApiKey: process.env.POLYGONSCAN_API_KEY || "",
     },
     42161: {
-        rpcUrl: process.env.ARBITRUM_RPC_URL ||
-            "https://arb1.arbitrum.io/rpc",
+        rpcUrl: process.env.ARBITRUM_RPC_URL || "https://arb1.arbitrum.io/rpc",
         etherscanApiUrl: "https://api.arbiscan.io/api",
         etherscanApiKey: process.env.ARBISCAN_API_KEY || "",
     },
     10: {
-        rpcUrl: process.env.OPTIMISM_RPC_URL ||
-            "https://mainnet.optimism.io",
+        rpcUrl: process.env.OPTIMISM_RPC_URL || "https://mainnet.optimism.io",
         etherscanApiUrl: "https://api-optimistic.etherscan.io/api",
         etherscanApiKey: process.env.OPTIMISM_ETHERSCAN_API_KEY || "",
     },

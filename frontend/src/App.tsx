@@ -9,6 +9,8 @@ import PortfolioPage from "./pages/portfolio-page";
 import WalletPage from "./pages/wallet-page";
 import CryptoPage from "./pages/crypto-page";
 import PricingPage from "./pages/pricing-page";
+import { ProfilePage } from "./pages/profile-page";
+import { SettingsPage } from "./pages/settings-page";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
@@ -27,6 +29,8 @@ function AppRoutes() {
         <Route path="wallet" element={<WalletPage />} />
         <Route path="crypto" element={<CryptoPage />} />
         <Route path="pricing" element={<PricingPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
     </Routes>
   );
