@@ -2,6 +2,15 @@
 
 A full-stack cryptocurrency tracking dashboard built with modern web technologies. Track your crypto portfolio, monitor market trends, and manage your investments in one place.
 
+---
+<img width="1900" height="902" alt="image" src="https://github.com/user-attachments/assets/45e36a6f-3c7a-43ed-916b-1d5477a2f6e8" />
+
+---
+
+<img width="1902" height="903" alt="image" src="https://github.com/user-attachments/assets/c02f41fe-cdf9-48ff-b093-a702adea96b1" />
+
+---
+
 ## ✨ Features
 
 ### 📊 Dashboard & Analytics
